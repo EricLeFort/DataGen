@@ -1,0 +1,8 @@
+{
+	"splitter": "best",
+	"min_impurity_decrease": 0.04,
+	"max_leaf_nodes": 6,
+	"min_weight_fraction_leaf": 0.05,
+	"max_features": 8,
+	"class_weight": "balanced"
+}

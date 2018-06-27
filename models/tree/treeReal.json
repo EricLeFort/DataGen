@@ -1,0 +1,8 @@
+{
+	"splitter": "random",
+	"min_impurity_decrease": 0.02,
+	"max_leaf_nodes": 6,
+	"min_weight_fraction_leaf": 0.05,
+	"max_features": 10,
+	"class_weight": "balanced"
+}

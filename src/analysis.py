@@ -4,6 +4,7 @@
 
 import pandas as pd
 import numpy as np
+import json
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import GridSearchCV
@@ -15,89 +16,39 @@ from sklearn.utils import shuffle
 
 #Pseudo-random seed made by mashing my keyboard, used for repeatability
 np.random.seed(971381386)
-dataset = "plateaus"
+dataset = "full"
+num_spikes = 3
 verbose = False
 
-#Model definitions
-if(dataset == "full"):
-	nn = MLPClassifier(
-		alpha=0.1,
-		learning_rate_init=0.1,
-		batch_size=128,
-		hidden_layer_sizes=(25, 25, 25),
-		verbose=verbose)
-	svm = SVC(
-		kernel='rbf',
-		C=5,
-		gamma=0.001,
-		max_iter=2000)
-	tree = DecisionTreeClassifier(
-		splitter='best',
-		min_impurity_decrease=0.01,
-		max_leaf_nodes=10,
-		min_weight_fraction_leaf=0.01,
-		max_features=6,
-		class_weight='balanced')
-
-elif(dataset == "real"):
-	nn = MLPClassifier(
-		alpha=0.0001,
-		learning_rate_init=0.001,
-		batch_size=64,
-		hidden_layer_sizes=(25, 25, 25),
-		verbose=verbose)
-	svm = SVC(
-		kernel='rbf',
-		C=5,
-		gamma=0.1,
-		max_iter=2000)
-	tree = DecisionTreeClassifier(
-		splitter='random',
-		min_impurity_decrease=0.02,
-		max_leaf_nodes=6,
-		min_weight_fraction_leaf=0.05,
-		max_features=10,
-		class_weight='balanced')
-
-elif(dataset == "spikes"):
-	nn = MLPClassifier(
-		alpha=0.1,
-		learning_rate_init=0.01,
-		batch_size=32,
-		hidden_layer_sizes=(25, 25, 25),
-		verbose=verbose)
-	svm = SVC(
-		kernel='rbf',
-		C=0.5,
-		gamma=0.1,
-		max_iter=2000)
-	tree = DecisionTreeClassifier(
-		splitter='best',
-		min_impurity_decrease=0.01,
-		max_leaf_nodes=10,
-		min_weight_fraction_leaf=0,
-		max_features=6,
-		class_weight='balanced')
-
+#Read in the appropriate model parameters
+if (dataset == "full" or dataset == "real"):
+	nnParams = json.loads(open("../models/nn/nn" + dataset + ".json").read())
+	svmParams = json.loads(open("../models/svm/svm" + dataset + ".json").read())
+	treeParams = json.loads(open("../models/tree/tree" + dataset + ".json").read())
 else:
-	nn = MLPClassifier(
-		alpha=0.0001,
-		learning_rate_init=0.01,
-		batch_size=64,
-		hidden_layer_sizes=(25, 25, 25),
-		verbose=verbose)
-	svm = SVC(
-		kernel='rbf',
-		C=0.5,
-		gamma=0.1,
-		max_iter=2000)
-	tree = DecisionTreeClassifier(
-		splitter='best',
-		min_impurity_decrease=0.01,
-		max_leaf_nodes=6,
-		min_weight_fraction_leaf=0,
-		max_features=8,
-		class_weight='balanced')
+	nnParams = json.loads(open("../models/nn/nn" + str(num_spikes) + dataset + ".json").read())
+	svmParams = json.loads(open("../models/svm/svm" + str(num_spikes) + dataset + ".json").read())
+	treeParams = json.loads(open("../models/tree/tree" + str(num_spikes) + dataset + ".json").read())
+
+#Load the models with the params
+nn = MLPClassifier(
+	alpha=nnParams['alpha'],
+	learning_rate_init=nnParams['learning_rate_init'],
+	batch_size=nnParams['batch_size'],
+	hidden_layer_sizes=nnParams['hidden_layer_sizes'],
+	verbose=verbose)
+svm = SVC(
+	kernel=svmParams['kernel'],
+	C=svmParams['C'],
+	gamma=svmParams['gamma'],
+	max_iter=2000)
+tree = DecisionTreeClassifier(
+	splitter=treeParams['splitter'],
+	min_impurity_decrease=treeParams['min_impurity_decrease'],
+	max_leaf_nodes=treeParams['max_leaf_nodes'],
+	min_weight_fraction_leaf=treeParams['min_weight_fraction_leaf'],
+	max_features=treeParams['max_features'],
+	class_weight=treeParams['class_weight'])
 
 # Load train/test/validate data and split into x and y
 # dataset - string dictating which dataset to use
@@ -188,7 +139,7 @@ def train_and_test(dataset):
 	x_train, y_train, x_test, y_test, x_val, y_val = load_data(dataset, 9)
 
 #Load and prepare train/test/validate datasets
-x_train, y_train, x_test, y_test, x_val, y_val = load_data(dataset, 9, True)
+x_train, y_train, x_test, y_test, x_val, y_val = load_data(dataset, num_spikes, True)
 
 #Hyperparameter grids to search
 nn_param_grid = [

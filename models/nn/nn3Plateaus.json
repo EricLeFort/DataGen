@@ -1,0 +1,6 @@
+{
+	"alpha": 0.001,
+	"learning_rate_init": 0.001,
+	"batch_size": 128,
+	"hidden_layer_sizes": [25, 25, 25]
+}
