@@ -1,2 +1,5 @@
-doc/
+doc/*.jpg
+doc/*.txt
+doc/*.png
+doc/*.pages
 data/
