@@ -1,5 +1,5 @@
 # DataGen
-An analysis of the theoretical usefulness of generating data to bolster a small dataset.
+### An analysis of the theoretical usefulness of generating data to bolster a small dataset.
 
 &nbsp;
 
@@ -99,23 +99,26 @@ Two 800-sample datasets will be created using these distributions — one using 
 
 In order to test the strength of each of these datasets, three different machine learning techniques were used: Multi-Layer Perceptrons (MLPs), Support Vector Machines (SVMs), and Decision Trees. To assist the learning, since certain features are much larger in magnitude than others, feature scaling was leveraged to normalize the data. The hyperparameters of the various models were tuned using grid search to maximize the probability of arriving at the strongest set of hyperparameters.
 
-In all, 24 different models were trained on 8 different datasets in order to get an idea on what effect the synthetic data had on the effectiveness of the learning. Feel free to check out the code[repo](https://github.com/EricLeFort/DataGen/src) in this repository!
+In all, 24 different models were trained on 8 different datasets in order to get an idea on what effect the synthetic data had on the effectiveness of the learning. Feel free to check out the [code](https://github.com/EricLeFort/DataGen/src) in this repository!
 
 # The Results
 ### Drumroll Please...
 After many hours tuning hyperparameters and scribbling down accuracy measurements, some counter-intuitive results emerged! The full set of results can be found in the tables below:
 
 **MLP**
+
 | Full | Real | Spike 9 | Plateau 9 | Spike 5 | Plateau 5 | Spike 3 | Plateau 3 |
 |------|:----:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
 | 97.0 | 95.3 | 97.8    | 95.8      | 97.7    | 98.0      | 95.3    | 97.4      |
 
 **SVM**
+
 | Full | Real | Spike 9 | Plateau 9 | Spike 5 | Plateau 5 | Spike 3 | Plateau 3 |
 |------|:----:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
 | 97.3 | 96.3 | 97.2    | 97.5      | 97.2    | 97.1      | 95.9    | 97.3      |
 
 **Decision Tree**
+
 | Full | Real | Spike 9 | Plateau 9 | Spike 5 | Plateau 5 | Spike 3 | Plateau 3 |
 |------|:----:|:-------:|:---------:|:-------:|:---------:|:-------:|:---------:|
 | 94.8 | 91.1 | 90.4    | 94.5      | 91.7    | 94.7      | 85.1    | 93.2      |
