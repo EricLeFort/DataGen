@@ -1,5 +1,5 @@
 # DataGen
-### An analysis of the theoretical usefulness of generating data to bolster a small dataset.
+### An analysis of the theoretical utility of generating data to bolster a small dataset.
 
 &nbsp;
 
